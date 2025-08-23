@@ -1,0 +1,35 @@
+# Arquivos de ambiente
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Binários do Go
+msu-forum
+main
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Diretórios de dependências
+vendor/
+go.mod
+go.sum
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Exemplo de ambiente (pode ser commitado)
+!.env.example

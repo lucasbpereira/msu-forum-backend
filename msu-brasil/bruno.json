@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "msu-brasil",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

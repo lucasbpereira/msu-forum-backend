@@ -1,0 +1,26 @@
+meta {
+  name: Register
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:3000/register
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Lucas Barbosa",
+    "email": "admin@msu.com.br",
+    "password": "123456",
+    "role": "Admin",
+    "phone": "2",
+    "wallet": "98"
+  }
+}
+
+settings {
+  encodeUrl: true
+}
