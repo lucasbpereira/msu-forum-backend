@@ -15,8 +15,7 @@ main
 
 # Diretórios de dependências
 vendor/
-go.mod
-go.sum
+
 
 # Logs
 *.log
