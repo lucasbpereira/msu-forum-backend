@@ -1,0 +1,38 @@
+meta {
+  name: Get User Votes
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/votes?page=1&limit=10
+  auth: bearer
+}
+
+headers {
+  Authorization: Bearer {{authToken}}
+}
+
+docs {
+  # Listar votos do usuário (Protegida)
+  
+  ## Autenticação:
+  Requer token JWT no header Authorization
+  
+  ## Parâmetros de query:
+  - page: Número da página (padrão: 1)
+  - limit: Limite de itens por página (padrão: 10)
+  
+  ## Resposta:
+  - 200: Lista de votos do usuário
+  - 401: Token inválido
+  - 500: Erro interno
+  
+  ## Dados retornados:
+  - id: ID do voto
+  - post_id: ID da pergunta/resposta
+  - post_type: Tipo ("question" ou "answer")
+  - type: Tipo do voto (1 ou -1)
+  - created_at: Data do voto
+  - post_content: Conteúdo do post votado
+}

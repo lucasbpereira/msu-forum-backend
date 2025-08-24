@@ -1,0 +1,44 @@
+meta {
+  name: Get User Answers
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/users/1/answers?page=1&limit=10
+  auth: bearer
+}
+
+headers {
+  Authorization: Bearer {{authToken}}
+}
+
+docs {
+  # Obter respostas de um usuário (Protegida)
+  
+  ## Autenticação:
+  Requer token JWT no header Authorization
+  
+  ## Parâmetros:
+  - userId: ID do usuário (na URL)
+  
+  ## Parâmetros de query:
+  - page: Número da página (padrão: 1)
+  - limit: Limite de itens por página (padrão: 10)
+  
+  ## Resposta:
+  - 200: Lista de respostas do usuário
+  - 400: ID do usuário inválido
+  - 401: Token inválido
+  - 500: Erro interno
+  
+  ## Dados retornados:
+  - Lista de respostas com:
+    - Informações básicas
+    - Nome do autor
+    - Avatar do autor
+    - Título da pergunta
+  
+  ## Ordenação:
+  - Por data de criação (mais recentes primeiro)
+}

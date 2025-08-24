@@ -1,0 +1,47 @@
+meta {
+  name: Update Profile
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{baseUrl}}/api/profile
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearer {{authToken}}
+}
+
+body:json {
+  {
+    "username": "usuario_atualizado",
+    "phone": "11988888888",
+    "wallet": "0x987654321",
+    "avatar_url": "https://example.com/avatar.jpg"
+  }
+}
+
+docs {
+  # Atualizar perfil do usuário (Protegida)
+  
+  ## Autenticação:
+  Requer token JWT no header Authorization
+  
+  ## Dados opcionais:
+  - username: Nome do usuário
+  - phone: Telefone
+  - wallet: Carteira
+  - avatar_url: URL do avatar
+  
+  ## Resposta:
+  - 200: Perfil atualizado com sucesso
+  - 400: Dados inválidos
+  - 401: Token inválido
+  - 500: Erro interno
+  
+  ## Observação:
+  Atualiza automaticamente o campo last_seen
+}

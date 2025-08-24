@@ -1,0 +1,35 @@
+meta {
+  name: List Questions
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/questions?page=1&limit=10
+  body: none
+  auth: none
+}
+
+docs {
+  # Listar perguntas (Pública)
+  
+  ## Parâmetros de query:
+  - page: Número da página (padrão: 1)
+  - limit: Limite de itens por página (padrão: 10)
+  
+  ## Resposta:
+  - 200: Lista de perguntas com informações do autor
+  - 500: Erro interno
+  
+  ## Dados retornados:
+  - id: ID da pergunta
+  - title: Título
+  - body: Conteúdo
+  - votes: Número de votos
+  - view_count: Número de visualizações
+  - answer_count: Número de respostas
+  - is_solved: Se foi resolvida
+  - created_at: Data de criação
+  - username: Nome do autor
+  - avatar_url: Avatar do autor
+}

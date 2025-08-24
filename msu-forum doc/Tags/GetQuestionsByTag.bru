@@ -1,0 +1,37 @@
+meta {
+  name: Get Questions By Tag
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/tags/1/questions?page=1&limit=10
+  body: none
+  auth: none
+}
+
+docs {
+  # Buscar perguntas por tag (Pública)
+  
+  ## Parâmetros:
+  - tagId: ID da tag (na URL)
+  
+  ## Parâmetros de query:
+  - page: Número da página (padrão: 1)
+  - limit: Limite de itens por página (padrão: 10)
+  
+  ## Resposta:
+  - 200: Lista de perguntas com a tag
+  - 400: ID da tag inválido
+  - 500: Erro interno
+  
+  ## Dados retornados:
+  - Lista de perguntas com:
+    - Informações básicas
+    - Nome do autor
+    - Avatar do autor
+    - Contador de respostas
+  
+  ## Ordenação:
+  - Por data de criação (mais recentes primeiro)
+}

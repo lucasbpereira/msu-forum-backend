@@ -1,0 +1,42 @@
+meta {
+  name: Delete Tag
+  type: http
+  seq: 6
+}
+
+delete {
+  url: {{baseUrl}}/api/admin/tags/1
+  body: none
+  auth: bearer
+}
+
+headers {
+  Authorization: Bearer {{authToken}}
+}
+
+auth:bearer {
+  token: {{globalToken}}
+}
+
+docs {
+  # Deletar tag (Admin)
+  
+  ## Autenticação:
+  Requer token JWT no header Authorization
+  
+  ## Permissões:
+  Apenas administradores podem deletar tags
+  
+  ## Parâmetros:
+  - id: ID da tag (na URL)
+  
+  ## Resposta:
+  - 200: Tag deletada com sucesso
+  - 401: Token inválido
+  - 403: Sem permissão (apenas admin)
+  - 404: Tag não encontrada
+  - 500: Erro interno
+  
+  ## Observação:
+  Remove todas as relações com perguntas antes de deletar
+}

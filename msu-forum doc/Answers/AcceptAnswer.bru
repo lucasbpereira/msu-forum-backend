@@ -1,0 +1,39 @@
+meta {
+  name: Accept Answer
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/api/answers/1/accept
+  auth: bearer
+}
+
+headers {
+  Authorization: Bearer {{authToken}}
+}
+
+docs {
+  # Aceitar resposta (Protegida)
+  
+  ## Autenticação:
+  Requer token JWT no header Authorization
+  
+  ## Permissões:
+  Apenas o autor da pergunta pode aceitar respostas
+  
+  ## Parâmetros:
+  - id: ID da resposta (na URL)
+  
+  ## Resposta:
+  - 200: Resposta aceita com sucesso
+  - 401: Token inválido
+  - 403: Sem permissão (apenas autor da pergunta)
+  - 404: Resposta não encontrada
+  - 500: Erro interno
+  
+  ## Observações:
+  - Desmarca outras respostas como aceitas
+  - Marca a pergunta como resolvida
+  - Apenas uma resposta pode ser aceita por pergunta
+}

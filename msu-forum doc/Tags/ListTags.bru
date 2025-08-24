@@ -1,0 +1,34 @@
+meta {
+  name: List Tags
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/tags?page=1&limit=20
+  body: none
+  auth: none
+}
+
+docs {
+  # Listar tags (Pública)
+  
+  ## Parâmetros de query:
+  - page: Número da página (padrão: 1)
+  - limit: Limite de itens por página (padrão: 20)
+  
+  ## Resposta:
+  - 200: Lista de tags ordenadas por uso
+  - 500: Erro interno
+  
+  ## Dados retornados:
+  - id: ID da tag
+  - name: Nome da tag
+  - description: Descrição
+  - usage_count: Número de usos
+  - created_at: Data de criação
+  
+  ## Ordenação:
+  - Por número de usos (decrescente)
+  - Por nome (alfabética)
+}

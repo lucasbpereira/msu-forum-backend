@@ -1,0 +1,40 @@
+meta {
+  name: Get Profile
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/profile
+  auth: bearer
+}
+
+headers {
+  Authorization: Bearer {{authToken}}
+}
+
+docs {
+  # Obter perfil do usuário (Protegida)
+  
+  ## Autenticação:
+  Requer token JWT no header Authorization
+  
+  ## Resposta:
+  - 200: Dados do perfil do usuário
+  - 401: Token inválido
+  - 404: Usuário não encontrado
+  - 500: Erro interno
+  
+  ## Dados retornados:
+  - id: ID do usuário
+  - username: Nome do usuário
+  - email: Email
+  - reputation: Reputação
+  - role: Cargo
+  - phone: Telefone
+  - wallet: Carteira
+  - created_at: Data de criação
+  - last_seen: Última atividade
+  - is_active: Se está ativo
+  - avatar_url: URL do avatar
+}

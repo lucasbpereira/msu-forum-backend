@@ -1,0 +1,45 @@
+meta {
+  name: Login
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/login
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "email": "lucasbpereira97@gmail.com",
+    "password": "LucasBP#258"
+  }
+}
+
+script:post-response {
+  bru.setGlobalEnvVar("globalToken", res.getBody().token);
+}
+
+docs {
+  # Fazer login
+  
+  ## Dados necessários:
+  - email: Email do usuário
+  - password: Senha do usuário
+  
+  ## Resposta:
+  - 200: Login realizado com sucesso (retorna token JWT)
+  - 401: Credenciais inválidas
+  - 400: Dados inválidos
+  
+  ## Token JWT:
+  O token retornado deve ser usado no header Authorization para rotas protegidas:
+  ```
+  Authorization: Bearer <token>
+  ```
+}

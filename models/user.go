@@ -1,15 +1,21 @@
 package models
 
-import "time"
+import (
+	"database/sql"
+	"time"
+)
 
 type User struct {
-	ID        int       `db:"id" json:"id"`
-	Name      string    `db:"name" json:"name"`
-	Email     string    `db:"email" json:"email"`
-	Password  string    `db:"password,omitempty"` // não exibir no JSON
-	Role      string    `db:"role" json:"role"`
-	Phone     string    `db:"phone" json:"phone"`
-	Wallet    string    `db:"wallet" json:"wallet"`
-	CreatedAt time.Time `db:"created_at" json:"created_at"`
-	UpdatedAt time.Time `db:"updated_at" json:"updated_at"`
+	ID         int            `json:"id" db:"id"`
+	Username   string         `json:"username" db:"username"`
+	Email      string         `json:"email" db:"email"`
+	Password   string         `json:"password" db:"password"`
+	Reputation int32          `json:"reputation" db:"reputation"`
+	Role       string         `db:"role" json:"role"`
+	Phone      string         `json:"phone" db:"phone"`
+	Wallet     string         `json:"wallet" db:"wallet"`
+	CreatedAt  time.Time      `json:"created_at" db:"created_at"`
+	LastSeen   time.Time      `json:"last_seen" db:"last_seen"`
+	IsActive   bool           `json:"is_active" db:"is_active"`
+	AvatarURL  sql.NullString `json:"avatar_url" db:"avatar_url"`
 }

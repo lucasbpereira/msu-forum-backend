@@ -1,0 +1,52 @@
+meta {
+  name: Vote
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/votes
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearer {{authToken}}
+}
+
+body:json {
+  {
+    "post_type": "question",
+    "post_id": 1,
+    "type": 1
+  }
+}
+
+docs {
+  # Votar em pergunta ou resposta (Protegida)
+  
+  ## Autenticação:
+  Requer token JWT no header Authorization
+  
+  ## Dados necessários:
+  - post_type: Tipo do post ("question" ou "answer")
+  - post_id: ID da pergunta ou resposta
+  - type: Tipo do voto (1 = upvote, -1 = downvote)
+  
+  ## Resposta:
+  - 201: Voto registrado com sucesso
+  - 200: Voto atualizado ou removido
+  - 400: Dados inválidos
+  - 401: Token inválido
+  - 500: Erro interno
+  
+  ## Comportamento:
+  - Se votar no mesmo tipo: remove o voto
+  - Se votar em tipo diferente: atualiza o voto
+  - Atualiza automaticamente os contadores de votos
+  
+  ## Exemplos:
+  - Upvote em pergunta: `{"post_type": "question", "post_id": 1, "type": 1}`
+  - Downvote em resposta: `{"post_type": "answer", "post_id": 5, "type": -1}`
+}
