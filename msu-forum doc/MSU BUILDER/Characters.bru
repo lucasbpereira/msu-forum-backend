@@ -1,0 +1,23 @@
+meta {
+  name: Characters
+  type: http
+  seq: 1
+}
+
+get {
+  url: https://openapi.msu.io/v1beta/accounts/0xd003E53D810bdf431F6060Fa50575e6C1ac45d04/characters?paginationParam.pageNo=1
+  body: none
+  auth: bearer
+}
+
+params:query {
+  paginationParam.pageNo: 1
+}
+
+auth:bearer {
+  token: gw_61c734846e3cc189bde32f567450c0965129e46b47194d4725c2a67e4f570e68df309133308d1b038e25826f9bd0a730a40ca828cb404b1474b2ddb60998f042
+}
+
+settings {
+  encodeUrl: true
+}
