@@ -229,3 +229,35 @@ func DeleteQuestion(c *fiber.Ctx) error {
 
 	return c.JSON(fiber.Map{"message": "Pergunta deletada com sucesso"})
 }
+
+
+// Buscar perguntas por título ou corpo
+func SearchQuestions(c *fiber.Ctx) error {
+	query := c.Query("q")
+	if query == "" {
+		return c.Status(400).JSON(fiber.Map{"error": "Parâmetro de busca é obrigatório"})
+	}
+
+	var questions []struct {
+		models.Question
+		Username  string `json:"username" db:"username"`
+		AvatarURL string `json:"avatar_url" db:"avatar_url"`
+		Similarity float64 `json:"similarity" db:"similarity"`
+	}
+
+	err := database.DB.Select(&questions, `
+		SELECT q.*, u.username, u.avatar_url,
+		       GREATEST(similarity(q.title, $1), similarity(q.body, $1)) AS similarity
+		FROM questions q
+		LEFT JOIN users u ON q.user_id = u.id
+		WHERE q.title ILIKE '%' || $1 || '%' OR q.body ILIKE '%' || $1 || '%'
+		ORDER BY similarity DESC
+		LIMIT 20
+	`, query)
+
+	if err != nil {
+		return c.Status(500).JSON(fiber.Map{"error": "Erro ao buscar perguntas"})
+	}
+
+	return c.JSON(questions)
+}
