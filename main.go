@@ -29,7 +29,7 @@ func main() {
 	app.Post("/register", handlers.Register)
 	app.Post("/login", handlers.Login)
 	app.Get("/questions", handlers.GetQuestions)
-	app.Get("/questions/:id", handlers.GetQuestion)
+	app.Get("/questions/search", handlers.SearchQuestions)
 	app.Get("/tags", handlers.GetTags)
 	app.Get("/tags/:id", handlers.GetTag)
 	app.Get("/tags/:tagId/questions", handlers.GetQuestionsByTag)

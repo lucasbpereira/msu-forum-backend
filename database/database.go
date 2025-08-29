@@ -15,12 +15,13 @@ func Connect() {
 	var err error
 
 	dsn := fmt.Sprintf(
-		"user=%s password=%s dbname=%s host=%s port=%s sslmode=disable",
+		"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
+		os.Getenv("DB_HOST"),
+		os.Getenv("DB_PORT"),
 		os.Getenv("DB_USER"),
 		os.Getenv("DB_PASSWORD"),
 		os.Getenv("DB_NAME"),
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_PORT"),
+		os.Getenv("DB_SSLMODE"),
 	)
 
 	DB, err = sqlx.Connect("postgres", dsn)
