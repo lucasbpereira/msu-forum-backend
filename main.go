@@ -28,6 +28,7 @@ func main() {
 	// Rotas públicas
 	app.Post("/register", handlers.Register)
 	app.Post("/login", handlers.Login)
+	app.Post("/wallet", handlers.HasUserWithThisWallet)
 	app.Get("/questions", handlers.GetQuestions)
 	app.Get("/questions/search", handlers.SearchQuestions)
 	app.Get("/tags", handlers.GetTags)

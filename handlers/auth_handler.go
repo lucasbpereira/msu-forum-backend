@@ -28,9 +28,17 @@ func Register(c *fiber.Ctx) error {
 		return c.Status(400).JSON(fiber.Map{"error": "JSON inválido"})
 	}
 
-	// Validação de campos obrigatórios (Wallet não é obrigatório)
-	if data.Username == "" || data.Email == "" || data.Password == "" {
-		return c.Status(400).JSON(fiber.Map{"error": "Username, email e password são obrigatórios"})
+	// Validação de campos obrigatórios (Wallet agora é obrigatória)
+	if data.Username == "" || data.Email == "" || data.Password == "" || data.Wallet == "" {
+		return c.Status(400).JSON(fiber.Map{"error": "Username, email, password e wallet são obrigatórios"})
+	}
+
+	// Verifica se a wallet já existe
+	var existingUser models.User
+	walletCheckQuery := "SELECT id FROM users WHERE wallet = $1"
+	err := database.DB.Get(&existingUser, walletCheckQuery, data.Wallet)
+	if err == nil {
+		return c.Status(400).JSON(fiber.Map{"error": "Wallet já está em uso"})
 	}
 
 	// Criptografa senha
@@ -60,7 +68,7 @@ func Register(c *fiber.Ctx) error {
 		string(hash),
 		"Member",
 		data.Phone,
-		data.Wallet, // Pode ser vazio (não obrigatório)
+		data.Wallet, // Agora obrigatório
 		0,           // reputation
 		true,        // is_active
 		now,
@@ -88,7 +96,7 @@ func Register(c *fiber.Ctx) error {
 
 func Login(c *fiber.Ctx) error {
 	var data struct {
-		Email    string `json:"email"`
+		Wallet   string `json:"wallet"`
 		Password string `json:"password"`
 	}
 
@@ -96,17 +104,22 @@ func Login(c *fiber.Ctx) error {
 		return c.Status(400).JSON(fiber.Map{"error": "JSON inválido"})
 	}
 
-	var user models.User
-	query := "SELECT * FROM users WHERE LOWER(email) = LOWER($1)"
+	// Validação de campo obrigatório
+	if data.Wallet == "" {
+		return c.Status(400).JSON(fiber.Map{"error": "Wallet é obrigatória"})
+	}
 
-	err := database.DB.Get(&user, query, data.Email)
+	var user models.User
+	query := "SELECT * FROM users WHERE wallet = $1"
+
+	err := database.DB.Get(&user, query, data.Wallet)
 	if err != nil {
 		fmt.Printf("Erro na query: %v\n", err)
-		fmt.Println("Nenhum usuário encontrado com esse email.")
+		fmt.Println("Nenhum usuário encontrado com essa wallet.")
 		return c.Status(401).JSON(fiber.Map{"error": "Credenciais inválidas"})
 	}
 
-	fmt.Printf("Usuário encontrado: ID=%d, Email=%s\n", user.ID, user.Email)
+	fmt.Printf("Usuário encontrado: ID=%d, Wallet=%s\n", user.ID, user.Wallet)
 	fmt.Printf("Hash no banco: %s\n", user.Password)
 
 	// Teste a senha manualmente para debug
@@ -131,6 +144,7 @@ func Login(c *fiber.Ctx) error {
 	claims := jwt.MapClaims{
 		"user_id": user.ID,
 		"role":    user.Role,
+		"wallet":  user.Wallet, // Inclui a wallet no token se necessário
 		"exp":     time.Now().Add(24 * time.Hour).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
