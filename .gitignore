@@ -8,5 +8,7 @@
 # Arquivos sensíveis e de expressão
 expressions.txt
 
+/msu-forum-doc/
+
 # Binários e dependências
 /vendor/
