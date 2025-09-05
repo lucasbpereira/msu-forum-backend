@@ -23,15 +23,21 @@ func GetProfile(c *fiber.Ctx) error {
 }
 
 func HasUserWithThisWallet(c *fiber.Ctx) error {
-	wallet := c.Locals("wallet").(string)
-
-	var user models.User
-	err := database.DB.Get(&user, "SELECT * FROM users WHERE wallet = $1", wallet)
-	if err != nil {
-		return c.Status(404).JSON(fiber.Map{"error": "Usuário não encontrado"})
+	var body struct {
+		Wallet string `json:"wallet"`
 	}
 
-	return c.JSON(user)
+	if err := c.BodyParser(&body); err != nil {
+		return c.Status(400).JSON(fiber.Map{"error": "JSON inválido"})
+	}
+
+	var exists bool
+	err := database.DB.Get(&exists, "SELECT EXISTS(SELECT 1 FROM users WHERE wallet = $1)", body.Wallet)
+	if err != nil {
+		return c.Status(500).JSON(fiber.Map{"error": "Erro ao consultar banco"})
+	}
+
+	return c.JSON(fiber.Map{"exists": exists})
 }
 
 // Atualizar perfil do usuário

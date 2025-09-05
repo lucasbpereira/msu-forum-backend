@@ -2,21 +2,27 @@ package middleware
 
 import (
 	"os"
-	"strings"
+	// "strings" // Não é mais necessário
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
 )
 
 func AuthRequired(c *fiber.Ctx) error {
-	authHeader := c.Get("Authorization")
-	if authHeader == "" {
+	// 1. Obter o token do cookie chamado "auth_token"
+	tokenString := c.Cookies("auth_token")
+
+	// 2. Verificar se o cookie existe
+	if tokenString == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Token ausente"})
 	}
 
-	tokenString := strings.Replace(authHeader, "Bearer ", "", 1)
-
+	// 3. O resto da lógica de validação do token permanece a mesma
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		// Validação do método de assinatura
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fiber.NewError(fiber.StatusUnauthorized, "Método de assinatura inesperado")
+		}
 		return []byte(os.Getenv("JWT_SECRET")), nil
 	})
 
@@ -24,7 +30,10 @@ func AuthRequired(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Token inválido"})
 	}
 
-	claims := token.Claims.(jwt.MapClaims)
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Claims do token inválidas"})
+	}
 
 	// Conversão correta do user_id
 	userID := int(claims["user_id"].(float64))

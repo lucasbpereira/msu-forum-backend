@@ -7,12 +7,12 @@ import (
 
 type User struct {
 	ID         int            `json:"id" db:"id"`
-	Username   string         `json:"username" db:"username"`
-	Email      string         `json:"email" db:"email"`
-	Password   string         `json:"password" db:"password"`
+	Username   sql.NullString `json:"username" db:"username"`
+	Email      sql.NullString `json:"email" db:"email"`
+	Password   sql.NullString `json:"password" db:"password"`
+	Phone      sql.NullString `json:"phone" db:"phone"`
 	Reputation int32          `json:"reputation" db:"reputation"`
-	Role       string         `db:"role" json:"role"`
-	Phone      string         `json:"phone" db:"phone"`
+	Role       string         `json:"role" db:"role"`
 	Wallet     string         `json:"wallet" db:"wallet"`
 	CreatedAt  time.Time      `json:"created_at" db:"created_at"`
 	LastSeen   time.Time      `json:"last_seen" db:"last_seen"`

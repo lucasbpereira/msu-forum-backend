@@ -28,6 +28,8 @@ func main() {
 	// Rotas públicas
 	app.Post("/register", handlers.Register)
 	app.Post("/login", handlers.Login)
+	app.Post("/logout", handlers.Logout)
+
 	app.Post("/wallet", handlers.HasUserWithThisWallet)
 	app.Get("/questions", handlers.GetQuestions)
 	app.Get("/questions/search", handlers.SearchQuestions)
@@ -38,6 +40,7 @@ func main() {
 	// Rotas protegidas
 	api := app.Group("/api", middleware.AuthRequired)
 	v1 := api.Group("/v1")
+
 	// Perguntas
 	v1.Post("/questions", handlers.CreateQuestion)
 	v1.Put("/questions/:id", handlers.UpdateQuestion)
